@@ -1,0 +1,40 @@
+<div *ngIf="entity$ | async as entity; else loading">
+  <!-- Name -->
+  <div class="h4 font-weight-bold mb-4">{{ entity.name }}</div>
+
+  <!-- Description -->
+  <div class="mb-3 pb-3 border-bottom">
+    <div class="h6 text-muted">Description</div>
+    <div *ngIf="entity.description; else missingData">{{ entity.description }}</div>
+  </div>
+
+  <!-- Date -->
+  <div class="mb-3 pb-3 border-bottom">
+    <div class="h6 text-muted">Date</div>
+    <div *ngIf="entity.dateFormatted; else missingData">{{ entity.dateFormatted | date:'longDate' }}</div>
+  </div>
+
+  <!-- Amount -->
+  <div class="mb-3 pb-3 border-bottom">
+    <div class="h6 text-muted">Amount</div>
+    <div *ngIf="entity.amount; else missingData">{{ entity.amount | number }}</div>
+  </div>
+
+  <!-- Privacy -->
+  <div>
+    <div class="h6 text-muted">Privacy</div>
+    <div>{{ entity.isPrivate ? 'Private' : 'Public' }}</div>
+  </div>
+
+</div>
+
+<ng-template #missingData>
+  <span class="text-muted">-</span>
+</ng-template>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center">
+    <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="40"></mat-progress-spinner>
+  </div>
+
+</ng-template>

@@ -1,0 +1,54 @@
+<div class="card">
+  <!-- Card header -->
+  <div class="card-header card-header-primary">
+    <h4 class="card-title">Create a New Entity</h4>
+    <p class="card-category">Using the map42 API and data-base</p>
+  </div>
+  <!-- /Card header -->
+  <!-- Card body -->
+  <div class="card-body">
+    <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
+
+      <!-- Name -->
+      <mat-form-field class="mt-3" floatLabel="always">
+        <mat-label>Name</mat-label>
+        <input matInput [formControl]="entityForm.get('name')" [errorStateMatcher]="matcher">
+      </mat-form-field>
+
+      <!-- Description -->
+      <mat-form-field class="mt-3" floatLabel="always">
+        <mat-label>Description</mat-label>
+        <input matInput [formControl]="entityForm.get('description')" [errorStateMatcher]="matcher">
+      </mat-form-field>
+
+      <!-- Date -->
+      <mat-form-field class="mt-3" floatLabel="always">
+        <mat-label>Date</mat-label>
+        <input class="cursor-pointer" matInput [matDatepicker]="picker" [formControl]="entityForm.get('date')"
+          [errorStateMatcher]="matcher" (click)="picker.open()" autocomplete="off" readonly>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <!-- Amount -->
+      <mat-form-field class="mt-3" floatLabel="always">
+        <mat-label>Amount</mat-label>
+        <input type="number" matInput [formControl]="entityForm.get('amount')" [errorStateMatcher]="matcher">
+      </mat-form-field>
+
+      <!-- Privacy -->
+      <label id="example-radio-group-label"><small>Privacy</small></label>
+      <mat-radio-group class="d-flex flex-column" color="primary" formControlName="privacy">
+        <mat-radio-button value="private">Private</mat-radio-button>
+        <mat-radio-button value="public">Public</mat-radio-button>
+      </mat-radio-group>
+
+      <div class="mt-4 text-right">
+        <button type="button" class="btn btn-link" routerLink="/entity">Go back</button>
+        <button type="submit" class="btn btn-primary" [attr.disabled]="this.entityForm.disabled ? true : null">
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
+  <!-- /Card body -->
+</div>

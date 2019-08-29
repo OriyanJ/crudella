@@ -1,0 +1,25 @@
+<div class="card">
+  <!-- Card header -->
+  <div class="card-header card-header-primary">
+    <h4 class="card-title">Entity List</h4>
+    <p class="card-category">Using the map42 API and data-base</p>
+  </div>
+  <!-- /Card header -->
+  <!-- Card body -->
+  <div class="card-body">
+    <a routerLink="create" class="btn btn-primary">Createa a new entity</a>
+    <div class="table-responsive" *ngIf="entities$ | async as entities">
+      <table class="table">
+        <thead class="text-primary">
+          <th>Name</th>
+          <th>Date</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <app-entity-item [entity]="entity" *ngFor="let entity of entities"></app-entity-item>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- /Card body -->
+</div>
