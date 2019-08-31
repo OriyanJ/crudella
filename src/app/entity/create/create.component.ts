@@ -1,20 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Entity } from '@app/models';
-import { EntityService, NotifyService } from '@app/services';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { NotifyService } from '@app/services';
+import { AppState } from '@app/store/app-state.model';
+import { AddEntityStart } from '@app/store/entity.actions';
+import { Store } from '@ngrx/store';
 
 import * as CustomValidators from '../../custom-validators';
-import { AppState } from '@app/store/app-state.model';
-import { Store } from '@ngrx/store';
-import { AddEntityStart } from '@app/store/entity.actions';
 
 @Component({
   selector: 'app-create',
@@ -22,15 +14,12 @@ import { AddEntityStart } from '@app/store/entity.actions';
   styleUrls: ['./create.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
+export class CreateComponent implements OnInit {
   entityForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private notifyService: NotifyService,
-    private entityService: EntityService,
-    private router: Router,
     private store: Store<AppState>
   ) {}
 
@@ -50,11 +39,6 @@ export class CreateComponent implements OnInit, OnDestroy {
       amount: [null, [Validators.max(999999), CustomValidators.numeric]],
       privacy: ['public']
     });
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   onSubmit() {
@@ -87,14 +71,5 @@ export class CreateComponent implements OnInit, OnDestroy {
     entity.isPrivate = this.entityForm.value.privacy === 'private';
 
     this.store.dispatch(new AddEntityStart(entity));
-    return;
-    // Attempt to create a new entity.
-    this.entityService
-      .addEntity(entity)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: () => this.router.navigate(['/entity']),
-        error: () => this.entityForm.enable()
-      });
   }
 }

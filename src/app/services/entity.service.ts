@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { Entity, EntityJson, EntityListJson } from '@app/models';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-
-import { NotifyService } from './notify.service';
+import { map } from 'rxjs/operators';
 
 const endpoint = `${environment.apiUrl}/Entity`;
 
@@ -16,7 +14,7 @@ export class EntityService {
   private _entities$ = new BehaviorSubject<{}>(null);
   readonly entities$ = this._entities$.asObservable();
 
-  constructor(private http: HttpClient, private notifyService: NotifyService) {}
+  constructor(private http: HttpClient) {}
 
   addEntity(entity?: Entity) {
     return this.http
@@ -51,18 +49,6 @@ export class EntityService {
     return this.http
       .get<EntityJson>(endpoint, { params: params })
       .pipe(map(json => new Entity(json)));
-  }
-
-  /**
-   * Map the entities coming from the API from an array to an Object of entities.
-   * This is done in order to manage the state easily.
-   */
-  private mapEntities(entities: Entity[]) {
-    const entitisObject = {};
-    entities.forEach(entity => {
-      entitisObject[entity.id] = entity;
-    });
-    return entitisObject;
   }
 
   private deserializeEntities(entities: EntityListJson) {

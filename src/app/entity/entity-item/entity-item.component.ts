@@ -1,23 +1,20 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Entity } from '@app/models';
 import { EntityService } from '@app/services';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import { EntityDetailsComponent } from '../entity-details/entity-details.component';
-import { Store } from '@ngrx/store';
 import { AppState } from '@app/store/app-state.model';
 import { RemoveEntityStart } from '@app/store/entity.actions';
+import { Store } from '@ngrx/store';
+
+import { EntityDetailsComponent } from '../entity-details/entity-details.component';
 
 @Component({
   selector: 'app-entity-item',
   templateUrl: './entity-item.component.html',
   styleUrls: ['./entity-item.component.scss']
 })
-export class EntityItemComponent implements OnInit, OnDestroy {
+export class EntityItemComponent implements OnInit {
   @Input() entity: Entity;
-  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private entityService: EntityService,
@@ -26,11 +23,6 @@ export class EntityItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {}
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   /**
    * Request a removal of an entity by an ID.
