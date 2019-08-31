@@ -1,4 +1,9 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit
+} from '@angular/core';
 
 @Component({
   selector: 'app-form-error-handler',
@@ -8,10 +13,9 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 })
 export class FormErrorHandlerComponent implements OnInit {
   @Input() errors: {};
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Return an error message accordingly.
@@ -23,14 +27,13 @@ export class FormErrorHandlerComponent implements OnInit {
     switch (errorKey) {
       case 'required':
       case 'whitespaces':
-        return 'Input is required'
+        return 'Input is required';
       case 'maxlength':
         return `Up to ${error.requiredLength} characters allowed`;
       case 'numeric':
         return 'Only numebrs are allowed';
       default:
-        return 'Input is invalid'
+        return 'Input is invalid';
     }
   }
-
 }

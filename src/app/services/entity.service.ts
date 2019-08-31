@@ -1,9 +1,10 @@
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Entity, EntityJson, EntityListJson } from '@app/models';
 import { environment } from 'environments/environment';
-import { Entity, EntityListJson, EntityJson } from '@app/models';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 import { NotifyService } from './notify.service';
 
 const endpoint = `${environment.apiUrl}/Entity`;

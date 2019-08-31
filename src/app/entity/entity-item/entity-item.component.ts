@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Entity } from '@app/models';
 import { EntityService } from '@app/services';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogConfig
-} from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { EntityDetailsComponent } from '../entity-details/entity-details.component';
 
 @Component({
@@ -13,21 +12,34 @@ import { EntityDetailsComponent } from '../entity-details/entity-details.compone
   templateUrl: './entity-item.component.html',
   styleUrls: ['./entity-item.component.scss']
 })
-export class EntityItemComponent implements OnInit {
+export class EntityItemComponent implements OnInit, OnDestroy {
   @Input() entity: Entity;
+  private unsubscribe$ = new Subject<void>();
+
   constructor(private entityService: EntityService, public dialog: MatDialog) {}
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   /**
    * Request a removal of an entity by an ID.
    * @param id Entity ID.
    */
   removeEntity() {
-    this.entityService.removeEntity(this.entity.id).subscribe();
+    this.entityService
+      .removeEntity(this.entity.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe();
   }
 
-  openDialog(): void {
+  /**
+   * Open a dialog with the entity's details.
+   */
+  showEntityDetails(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       entityId: this.entity.id

@@ -1,9 +1,17 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotifyService, EntityService } from '@app/services';
-import { Entity } from '@app/models';
-import * as CustomValidators from '../../custom-validators';
 import { Router } from '@angular/router';
+import { Entity } from '@app/models';
+import { EntityService, NotifyService } from '@app/services';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import * as CustomValidators from '../../custom-validators';
 
 @Component({
   selector: 'app-create',
@@ -11,21 +19,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./create.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   entityForm: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     private notifyService: NotifyService,
     private entityService: EntityService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.entityService.loadEntities();
     this.entityForm = this.fb.group({
       name: [
         null,
-        [Validators.required, Validators.maxLength(100), CustomValidators.noWhitespaceValidator]
+        [
+          Validators.required,
+          Validators.maxLength(100),
+          CustomValidators.noWhitespaceValidator
+        ]
       ],
       description: [null],
       date: [null],
@@ -35,9 +49,12 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    console.log(this.entityForm);
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
+  onSubmit() {
     if (this.entityForm.invalid) {
       this.notifyService.error(
         'Failed to create an entity. Please make sure all form inputs are valid.'
@@ -46,11 +63,6 @@ export class CreateComponent implements OnInit {
     }
 
     this.createEntity();
-  }
-
-  logError() {
-    console.log('error!');
-
   }
 
   createEntity() {
@@ -71,10 +83,13 @@ export class CreateComponent implements OnInit {
     }
     entity.isPrivate = this.entityForm.value.privacy === 'private';
 
-    this.entityService.addEntity(entity).subscribe({
-      next: () => {
-        this.router.navigate(['/entity']);
-      }
-    });
+    // Attempt to create a new entity.
+    this.entityService
+      .addEntity(entity)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: () => this.router.navigate(['/entity']),
+        error: () => this.entityForm.enable()
+      });
   }
 }
