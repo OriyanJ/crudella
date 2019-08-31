@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -27,6 +27,8 @@ import { EntityItemComponent } from './entity/entity-item/entity-item.component'
 import { EntityListComponent } from './entity/entity-list/entity-list.component';
 import { EntityComponent } from './entity/entity.component';
 import { FormErrorHandlerComponent } from './form-error-handler/form-error-handler.component';
+import { SortByPipe } from './pipes/sort-by.pipe';
+import { HttpErrorInterceptor } from './http-error.interceptor';
 
 const materialComponents = [
   MatButtonModule,
@@ -63,9 +65,16 @@ const materialComponents = [
     EntityItemComponent,
     EntityDetailsComponent,
     CreateComponent,
-    FormErrorHandlerComponent
+    FormErrorHandlerComponent,
+    SortByPipe
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [EntityDetailsComponent]
 })

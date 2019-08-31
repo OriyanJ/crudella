@@ -47,8 +47,6 @@ export class EntityService {
 
   addEntity(entity?: Entity) {
     const data = entity.toJson(entity);
-    console.log(data);
-
     return this.http.post(endpoint, data).pipe(
       tap((json: EntityJson) => {
         const newEntity = new Entity(json);
@@ -90,7 +88,7 @@ export class EntityService {
    */
   getById(id: string) {
     let params = new HttpParams();
-    params = params.append('id', id);
+    params = params.append('id', 'asdasdasdas');
     return this.http
       .get<EntityJson>(endpoint, { params: params })
       .pipe(map(json => new Entity(json)));

@@ -7,8 +7,21 @@
   <!-- /Card header -->
   <!-- Card body -->
   <div class="card-body">
-    <a routerLink="create" class="btn btn-primary">Createa a new entity</a>
-    <div class="table-responsive" *ngIf="entities$ | async as entities">
+    <div class="row mb-3">
+      <div class="col-md-7">
+        <a routerLink="create" class="btn btn-primary d-block d-md-inline-block">Create entity</a>
+      </div>
+      <div class="col-md-5 d-flex align-items-baseline">
+        <label for="sort-by" class="mr-2">Sort</label>
+        <select name="sort-by" id="sort-by" class="form-control" [(ngModel)]="sortBy">
+          <option value="name">Name</option>
+          <option value="dateTicks">Date</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- List -->
+    <div class="table-responsive" *ngIf="entities$ | async | sortBy:sortBy as entities">
       <table class="table">
         <thead class="text-primary">
           <th>Name</th>
@@ -21,5 +34,6 @@
       </table>
     </div>
   </div>
+  <!-- /List -->
   <!-- /Card body -->
 </div>
