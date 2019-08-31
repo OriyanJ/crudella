@@ -88,7 +88,7 @@ export class EntityService {
    */
   getById(id: string) {
     let params = new HttpParams();
-    params = params.append('id', 'asdasdasdas');
+    params = params.append('id', id);
     return this.http
       .get<EntityJson>(endpoint, { params: params })
       .pipe(map(json => new Entity(json)));
