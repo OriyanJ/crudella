@@ -6,6 +6,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { EntityDetailsComponent } from '../entity-details/entity-details.component';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/store/app-state.model';
+import { RemoveEntityStart } from '@app/store/entity.actions';
 
 @Component({
   selector: 'app-entity-item',
@@ -16,7 +19,11 @@ export class EntityItemComponent implements OnInit, OnDestroy {
   @Input() entity: Entity;
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private entityService: EntityService, public dialog: MatDialog) {}
+  constructor(
+    private entityService: EntityService,
+    public dialog: MatDialog,
+    private store: Store<AppState>
+  ) {}
 
   ngOnInit() {}
 
@@ -30,10 +37,7 @@ export class EntityItemComponent implements OnInit, OnDestroy {
    * @param id Entity ID.
    */
   removeEntity() {
-    this.entityService
-      .removeEntity(this.entity.id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe();
+    this.store.dispatch(new RemoveEntityStart(this.entity.id));
   }
 
   /**

@@ -29,6 +29,10 @@ import { EntityComponent } from './entity/entity.component';
 import { FormErrorHandlerComponent } from './form-error-handler/form-error-handler.component';
 import { SortByPipe } from './pipes/sort-by.pipe';
 import { HttpErrorInterceptor } from './http-error.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { EntityReducer } from './store/entity.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { EntityEffects } from './store/entity.effects';
 
 const materialComponents = [
   MatButtonModule,
@@ -47,6 +51,10 @@ const materialComponents = [
 @NgModule({
   imports: [
     ...materialComponents,
+    StoreModule.forRoot({
+      entities: EntityReducer
+    }),
+    EffectsModule.forRoot([EntityEffects]),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

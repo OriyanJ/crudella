@@ -1,28 +1,29 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Entity } from '@app/models';
-import { EntityService } from '@app/services/entity.service';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { AppState } from '@app/store/app-state.model';
+import { EntityState } from '@app/store/entity.reducer';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-entity-list',
   templateUrl: './entity-list.component.html',
   styleUrls: ['./entity-list.component.scss']
 })
-export class EntityListComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
+export class EntityListComponent implements OnInit {
   entities$ = new Observable<Entity[]>();
   sortBy = 'dateTicks';
 
-  constructor(private entityService: EntityService) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.entities$ = this.entityService.selectEntities();
-    this.entityService.loadEntities();
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    this.entities$ = this.store
+      .select(store => store.entities)
+      .pipe(
+        map((entities: EntityState) =>
+          entities.items ? Object.values(entities.items) : []
+        )
+      );
   }
 }

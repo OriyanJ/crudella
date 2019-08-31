@@ -12,6 +12,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import * as CustomValidators from '../../custom-validators';
+import { AppState } from '@app/store/app-state.model';
+import { Store } from '@ngrx/store';
+import { AddEntityStart } from '@app/store/entity.actions';
 
 @Component({
   selector: 'app-create',
@@ -27,11 +30,11 @@ export class CreateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private notifyService: NotifyService,
     private entityService: EntityService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
-    this.entityService.loadEntities();
     this.entityForm = this.fb.group({
       name: [
         null,
@@ -83,6 +86,8 @@ export class CreateComponent implements OnInit, OnDestroy {
     }
     entity.isPrivate = this.entityForm.value.privacy === 'private';
 
+    this.store.dispatch(new AddEntityStart(entity));
+    return;
     // Attempt to create a new entity.
     this.entityService
       .addEntity(entity)
