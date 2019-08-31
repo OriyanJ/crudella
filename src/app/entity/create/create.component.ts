@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifyService, EntityService } from '@app/services';
 import { Entity } from '@app/models';
@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss']
+  styleUrls: ['./create.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateComponent implements OnInit {
   entityForm: FormGroup;
@@ -17,23 +18,26 @@ export class CreateComponent implements OnInit {
     private notifyService: NotifyService,
     private entityService: EntityService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.entityService.loadEntities();
     this.entityForm = this.fb.group({
       name: [
         null,
-        [Validators.required, CustomValidators.noWhitespaceValidator]
+        [Validators.required, Validators.maxLength(100), CustomValidators.noWhitespaceValidator]
       ],
       description: [null],
       date: [null],
-      amount: [null],
+      // I wasn't sure what was the meaning of "max 6 characters"
+      amount: [null, [Validators.max(999999), CustomValidators.numeric]],
       privacy: ['public']
     });
   }
 
   onSubmit() {
+    console.log(this.entityForm);
+
     if (this.entityForm.invalid) {
       this.notifyService.error(
         'Failed to create an entity. Please make sure all form inputs are valid.'
@@ -42,6 +46,11 @@ export class CreateComponent implements OnInit {
     }
 
     this.createEntity();
+  }
+
+  logError() {
+    console.log('error!');
+
   }
 
   createEntity() {

@@ -26,6 +26,7 @@ import { EntityDetailsComponent } from './entity/entity-details/entity-details.c
 import { EntityItemComponent } from './entity/entity-item/entity-item.component';
 import { EntityListComponent } from './entity/entity-list/entity-list.component';
 import { EntityComponent } from './entity/entity.component';
+import { FormErrorHandlerComponent } from './form-error-handler/form-error-handler.component';
 
 const materialComponents = [
   MatButtonModule,
@@ -61,7 +62,8 @@ const materialComponents = [
     EntityListComponent,
     EntityItemComponent,
     EntityDetailsComponent,
-    CreateComponent
+    CreateComponent,
+    FormErrorHandlerComponent
   ],
   providers: [],
   bootstrap: [AppComponent],
