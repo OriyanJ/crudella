@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://map42.gear.host/api'
+  apiUrl: 'https://map42.gear.host/api'
 };
