@@ -4,8 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CreateComponent } from './entity/create/create.component';
+import { EntityEditComponent } from './entity/entity-edit/entity-edit.component';
 import { EntityListComponent } from './entity/entity-list/entity-list.component';
 import { EntityComponent } from './entity/entity.component';
+import { GetEntityResolve } from './resolvers/get-entity.resolver';
 
 const routes: Routes = [
   {
@@ -18,7 +20,12 @@ const routes: Routes = [
     component: EntityComponent,
     children: [
       { path: '', component: EntityListComponent },
-      { path: 'create', component: CreateComponent }
+      { path: 'create', component: CreateComponent },
+      {
+        path: ':id',
+        component: EntityEditComponent,
+        resolve: { entity: GetEntityResolve }
+      }
     ]
   }
 ];

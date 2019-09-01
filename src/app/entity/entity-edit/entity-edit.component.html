@@ -1,0 +1,13 @@
+<div class="card" *ngIf="entity$ | async as entity">
+  <!-- Card header -->
+  <div class="card-header card-header-primary">
+    <h4 class="card-title">Edit Entity</h4>
+    <p class="card-category">ID: {{ entity.id }}</p>
+  </div>
+  <!-- /Card header -->
+  <!-- Card body -->
+  <div class="card-body">
+    <app-entity-form [isEdit]="true" [entity]="entity"></app-entity-form>
+  </div>
+  <!-- /Card body -->
+</div>

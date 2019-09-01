@@ -33,6 +33,8 @@ import { PageLoaderComponent } from './page-loader/page-loader.component';
 import { SortByPipe } from './pipes/sort-by.pipe';
 import { EntityEffects } from './store/entity.effects';
 import { EntityReducer } from './store/entity.reducer';
+import { EntityFormComponent } from './entity/entity-form/entity-form.component';
+import { EntityEditComponent } from './entity/entity-edit/entity-edit.component';
 
 const materialComponents = [
   MatButtonModule,
@@ -75,7 +77,9 @@ const materialComponents = [
     CreateComponent,
     FormErrorHandlerComponent,
     SortByPipe,
-    PageLoaderComponent
+    PageLoaderComponent,
+    EntityFormComponent,
+    EntityEditComponent
   ],
   providers: [],
   bootstrap: [AppComponent],

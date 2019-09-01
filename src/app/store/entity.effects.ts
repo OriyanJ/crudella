@@ -15,7 +15,10 @@ import {
   GetEntitiesSuccess,
   RemoveEntityFailed,
   RemoveEntityStart,
-  RemoveEntitySuccess
+  RemoveEntitySuccess,
+  UpdateEntityStart,
+  UpdateEntitySuccess,
+  UpdateEntityFailed
 } from './entity.actions';
 
 @Injectable({ providedIn: 'root' })
@@ -36,7 +39,7 @@ export class EntityEffects {
   @Effect() addEntityStart = this.actions$.pipe(
     ofType<AddEntityStart>(EntityActionTypes.ADD_ENTITY_START),
     mergeMap((action: any) =>
-      this.entityService.addEntity(action.payload).pipe(
+      this.entityService.sendEntity(action.payload).pipe(
         map(data => {
           this.router.navigate(['/entity']);
           return new AddEntitySuccess(data);
@@ -44,6 +47,22 @@ export class EntityEffects {
         catchError(error => {
           this.notifyService.error('Failed to add a new entity');
           return of(new AddEntityFailed());
+        })
+      )
+    )
+  );
+
+  @Effect() updateEntity = this.actions$.pipe(
+    ofType<UpdateEntityStart>(EntityActionTypes.UPDATE_ENTITY_START),
+    mergeMap((action: any) =>
+      this.entityService.sendEntity(action.payload).pipe(
+        map(data => {
+          this.router.navigate(['/entity']);
+          return new UpdateEntitySuccess(data);
+        }),
+        catchError(error => {
+          this.notifyService.error('Failed to update entity');
+          return of(new UpdateEntityFailed());
         })
       )
     )

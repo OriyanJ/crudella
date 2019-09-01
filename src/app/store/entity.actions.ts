@@ -7,6 +7,9 @@ export enum EntityActionTypes {
   ADD_ENTITY_START = '[Add Entity] Add entity START',
   ADD_ENTITY_SUCCESS = '[Add Entity] Add entity SUCCESS',
   ADD_ENTITY_FAILED = '[Add Entity] Add entity FAILED',
+  UPDATE_ENTITY_START = '[Update Entity] Update entity START',
+  UPDATE_ENTITY_SUCCESS = '[Update Entity] Update entity SUCCESS',
+  UPDATE_ENTITY_FAILED = '[Update Entity] Update entity FAILED',
   REMOVE_ENTITY_START = '[Remove Entity] Remove entity START',
   REMOVE_ENTITY_SUCCESS = '[Remove Entity] Remove entity SUCCESS',
   REMOVE_ENTITY_FAILED = '[Remove Entity] Remove entity FAILED'
@@ -40,6 +43,20 @@ export class AddEntityFailed {
   readonly type = EntityActionTypes.ADD_ENTITY_FAILED;
 }
 
+export class UpdateEntityStart {
+  readonly type = EntityActionTypes.UPDATE_ENTITY_START;
+  constructor(public payload: Entity) {}
+}
+
+export class UpdateEntitySuccess {
+  readonly type = EntityActionTypes.UPDATE_ENTITY_SUCCESS;
+  constructor(public payload: Entity) {}
+}
+
+export class UpdateEntityFailed {
+  readonly type = EntityActionTypes.UPDATE_ENTITY_FAILED;
+}
+
 export class RemoveEntityStart {
   readonly type = EntityActionTypes.REMOVE_ENTITY_START;
   constructor(public payload: string) {}
@@ -59,6 +76,9 @@ export type EntityActions =
   | GetEntitiesSuccess
   | AddEntityStart
   | AddEntitySuccess
+  | UpdateEntityStart
+  | UpdateEntitySuccess
+  | UpdateEntityFailed
   | RemoveEntityStart
   | RemoveEntitySuccess
   | RemoveEntityFailed;

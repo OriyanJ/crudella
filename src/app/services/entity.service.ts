@@ -14,10 +14,10 @@ export class EntityService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Add a new entity.
-   * @param entity The desired entity to add.
+   * Either update or create an entity.
+   * @param entity The desired entity to update/add.
    */
-  addEntity(entity?: Entity) {
+  sendEntity(entity?: Entity) {
     return this.http
       .post(endpoint, entity.toJson(entity))
       .pipe(map((json: EntityJson) => new Entity(json)));

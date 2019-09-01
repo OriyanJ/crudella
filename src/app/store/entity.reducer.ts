@@ -17,6 +17,7 @@ export function EntityReducer(
   switch (action.type) {
     case EntityActionTypes.GET_ENTITIES_START:
     case EntityActionTypes.ADD_ENTITY_START:
+    case EntityActionTypes.UPDATE_ENTITY_START:
     case EntityActionTypes.REMOVE_ENTITY_START:
       return { ...state, loading: true };
 
@@ -31,6 +32,19 @@ export function EntityReducer(
       return {
         ...state,
         items: [...state.items, action.payload],
+        loading: false
+      };
+
+    case EntityActionTypes.UPDATE_ENTITY_SUCCESS:
+      const items = state.items.map((entity: Entity) => {
+        if (entity.id === action.payload.id) {
+          return action.payload;
+        }
+        return entity;
+      });
+      return {
+        ...state,
+        items: items,
         loading: false
       };
 

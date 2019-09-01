@@ -5,8 +5,12 @@
   {{ entity.dateFormatted | date:'MM/dd/y' }}
 </td>
 <td class="text-right">
+  <button mat-raised-button class="btn btn-primary btn-link btn-sm btn-just-icon m-0" type="button"
+    [matTooltip]="'Edit ' + (entity.name ? entity.name : '')" [matTooltipPosition]="'above'" [routerLink]="[entity.id]">
+    <i class="material-icons">edit</i>
+  </button>
   <button mat-raised-button class="btn btn-danger btn-link btn-sm btn-just-icon m-0" type="button"
-    [matTooltip]="'Remove ' + entity.name" [matTooltipPosition]="'above'" (click)="removeEntity()">
+    [matTooltip]="'Remove ' + (entity.name ? entity.name : '')" [matTooltipPosition]="'above'" (click)="removeEntity()">
     <i class="material-icons">close</i>
   </button>
 </td>
