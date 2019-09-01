@@ -2,19 +2,14 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { EntityState } from './entity.reducer';
 
-export const getEntities = createFeatureSelector('entities');
+export const getState = createFeatureSelector('entities');
 
-export const getMappedEntities = createSelector(
-  getEntities,
+export const getEntities = createSelector(
+  getState,
   (state: EntityState) => state.items
 );
 
-export const getEntitiesArray = createSelector(
-  getEntities,
-  (state: EntityState) => Object.values(state.items)
-);
-
 export const getProgress = createSelector(
-  getEntities,
+  getState,
   (state: EntityState) => state.loading
 );

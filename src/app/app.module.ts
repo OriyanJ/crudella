@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -18,6 +18,8 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -27,12 +29,10 @@ import { EntityItemComponent } from './entity/entity-item/entity-item.component'
 import { EntityListComponent } from './entity/entity-list/entity-list.component';
 import { EntityComponent } from './entity/entity.component';
 import { FormErrorHandlerComponent } from './form-error-handler/form-error-handler.component';
+import { PageLoaderComponent } from './page-loader/page-loader.component';
 import { SortByPipe } from './pipes/sort-by.pipe';
-import { HttpErrorInterceptor } from './http-error.interceptor';
-import { StoreModule } from '@ngrx/store';
-import { EntityReducer } from './store/entity.reducer';
-import { EffectsModule } from '@ngrx/effects';
 import { EntityEffects } from './store/entity.effects';
+import { EntityReducer } from './store/entity.reducer';
 
 const materialComponents = [
   MatButtonModule,
@@ -74,15 +74,10 @@ const materialComponents = [
     EntityDetailsComponent,
     CreateComponent,
     FormErrorHandlerComponent,
-    SortByPipe
+    SortByPipe,
+    PageLoaderComponent
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
-      multi: true
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent],
   entryComponents: [EntityDetailsComponent]
 })
