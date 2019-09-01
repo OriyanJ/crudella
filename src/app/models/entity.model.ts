@@ -19,7 +19,9 @@ export class Entity {
     this.id = json.Id;
     this.description = json.Description;
     this.dateTicks = json.Date;
-    this.dateFormatted = this.tickToDate(json.Date);
+    if (json.Date) {
+      this.dateFormatted = this.tickToDate(json.Date);
+    }
     this.name = json.Name;
     if (json.Amount) {
       this.amount = json.Amount;

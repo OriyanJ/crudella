@@ -35,7 +35,9 @@ export class EntityFormComponent implements OnInit {
     const name = this.isEdit ? this.entity.name : null;
     const description = this.isEdit ? this.entity.description : null;
     const dateTicks = this.isEdit
-      ? this.entity.tickToDate(this.entity.dateTicks)
+      ? this.entity.dateTicks
+        ? this.entity.tickToDate(this.entity.dateTicks)
+        : null
       : null;
     const amount = this.isEdit ? this.entity.amount : null;
     const privacy = this.isEdit

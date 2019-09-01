@@ -2,7 +2,7 @@
   <a (click)="showEntityDetails()" class="cursor-pointer text-primary">{{ entity.name }}</a>
 </td>
 <td>
-  {{ entity.dateFormatted | date:'MM/dd/y' }}
+  <ng-container *ngIf="entity.dateTicks">{{ entity.dateFormatted | date:'MM/dd/y' }}</ng-container>
 </td>
 <td class="text-right">
   <button mat-raised-button class="btn btn-primary btn-link btn-sm btn-just-icon m-0" type="button"
