@@ -24,6 +24,13 @@ export class CreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initForm();
+  }
+
+  /**
+   * Initialize the create entity form.
+   */
+  initForm() {
     this.entityForm = this.fb.group({
       name: [
         null,
@@ -41,6 +48,9 @@ export class CreateComponent implements OnInit {
     });
   }
 
+  /**
+   * Handle the form submission.
+   */
   onSubmit() {
     if (this.entityForm.invalid) {
       this.notifyService.error(
@@ -52,6 +62,9 @@ export class CreateComponent implements OnInit {
     this.createEntity();
   }
 
+  /**
+   * Create a new entity and add it to the state.
+   */
   createEntity() {
     this.entityForm.disable();
 
@@ -60,7 +73,7 @@ export class CreateComponent implements OnInit {
       entity.name = this.entityForm.value.name.trim();
     }
     if (this.entityForm.value.description) {
-      entity.description = this.entityForm.value.description;
+      entity.description = this.entityForm.value.description.trim();
     }
     if (this.entityForm.value.date) {
       entity.dateFormatted = this.entityForm.value.date;

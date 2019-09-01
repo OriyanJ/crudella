@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Entity } from '@app/models';
-import { EntityService } from '@app/services';
 import { AppState } from '@app/store/app-state.model';
 import { RemoveEntityStart } from '@app/store/entity.actions';
 import { Store } from '@ngrx/store';
@@ -16,17 +15,12 @@ import { EntityDetailsComponent } from '../entity-details/entity-details.compone
 export class EntityItemComponent implements OnInit {
   @Input() entity: Entity;
 
-  constructor(
-    private entityService: EntityService,
-    public dialog: MatDialog,
-    private store: Store<AppState>
-  ) {}
+  constructor(public dialog: MatDialog, private store: Store<AppState>) {}
 
   ngOnInit() {}
 
   /**
-   * Request a removal of an entity by an ID.
-   * @param id Entity ID.
+   * Remove an entity by its ID.
    */
   removeEntity() {
     this.store.dispatch(new RemoveEntityStart(this.entity.id));

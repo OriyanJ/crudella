@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { EntityService } from '@app/services';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 
 import {
   AddEntityStart,
@@ -12,16 +13,9 @@ import {
   RemoveEntityStart,
   RemoveEntitySuccess
 } from './entity.actions';
-import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class EntityEffects {
-  constructor(
-    private actions$: Actions,
-    private entityService: EntityService,
-    private router: Router
-  ) {}
-
   @Effect() getEntities = this.actions$.pipe(
     ofType<GetEntitiesStart>(EntityActionTypes.GET_ENTITIES_START),
     mergeMap(() =>
@@ -33,8 +27,8 @@ export class EntityEffects {
 
   @Effect() addEntityStart = this.actions$.pipe(
     ofType<AddEntityStart>(EntityActionTypes.ADD_ENTITY_START),
-    mergeMap(data =>
-      this.entityService.addEntity(data.payload).pipe(
+    mergeMap((action: any) =>
+      this.entityService.addEntity(action.payload).pipe(
         map(data => {
           this.router.navigate(['/entity']);
           return new AddEntitySuccess(data);
@@ -45,10 +39,16 @@ export class EntityEffects {
 
   @Effect() removeEntity = this.actions$.pipe(
     ofType<RemoveEntityStart>(EntityActionTypes.REMOVE_ENTITY_START),
-    mergeMap(data =>
+    mergeMap((action: any) =>
       this.entityService
-        .removeEntity(data.payload)
-        .pipe(map(response => new RemoveEntitySuccess(data.payload)))
+        .removeEntity(action.payload)
+        .pipe(map(response => new RemoveEntitySuccess(action.payload)))
     )
   );
+
+  constructor(
+    private actions$: Actions,
+    private entityService: EntityService,
+    private router: Router
+  ) {}
 }

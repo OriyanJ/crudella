@@ -11,8 +11,8 @@ import { delay } from 'rxjs/operators';
   styleUrls: ['./entity-details.component.scss']
 })
 export class EntityDetailsComponent implements OnInit {
-  entityId: string;
   entity$: Observable<Entity> = new Observable();
+  entityId: string;
 
   constructor(
     private entityService: EntityService,

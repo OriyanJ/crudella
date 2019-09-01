@@ -25,8 +25,11 @@ export function EntityReducer(
 
     case EntityActionTypes.ADD_ENTITY_SUCCESS:
       const entity = action.payload;
-      state.items[entity.id] = entity;
-      return state;
+      return {
+        ...state,
+        items: { ...state.items, entity },
+        loading: false
+      };
 
     case EntityActionTypes.REMOVE_ENTITY_SUCCESS:
       const items = state.items;

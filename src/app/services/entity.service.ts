@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Entity, EntityJson, EntityListJson } from '@app/models';
 import { environment } from 'environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const endpoint = `${environment.apiUrl}/Entity`;
@@ -11,11 +11,12 @@ const endpoint = `${environment.apiUrl}/Entity`;
   providedIn: 'root'
 })
 export class EntityService {
-  private _entities$ = new BehaviorSubject<{}>(null);
-  readonly entities$ = this._entities$.asObservable();
-
   constructor(private http: HttpClient) {}
 
+  /**
+   * Add a new entity.
+   * @param entity The desired entity to add.
+   */
   addEntity(entity?: Entity) {
     return this.http
       .post(endpoint, entity.toJson(entity))
@@ -33,7 +34,7 @@ export class EntityService {
   /**
    * Get a list of entities.
    */
-  getEntities(): Observable<Array<Entity>> {
+  getEntities(): Observable<Entity[]> {
     return this.http
       .get<EntityListJson>(endpoint)
       .pipe(map(json => this.deserializeEntities(json)));
