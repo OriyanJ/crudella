@@ -1,15 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Entity } from '@app/models';
-import { EntityService, NotifyService } from '@app/services';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { NotifyService } from '@app/services';
+import { AppState } from '@app/store/app-state.model';
+import { AddEntityStart } from '@app/store/entity.actions';
+import { Store } from '@ngrx/store';
 
 import * as CustomValidators from '../../custom-validators';
 
@@ -19,19 +14,23 @@ import * as CustomValidators from '../../custom-validators';
   styleUrls: ['./create.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
+export class CreateComponent implements OnInit {
   entityForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private notifyService: NotifyService,
-    private entityService: EntityService,
-    private router: Router
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
-    this.entityService.loadEntities();
+    this.initForm();
+  }
+
+  /**
+   * Initialize the create entity form.
+   */
+  initForm() {
     this.entityForm = this.fb.group({
       name: [
         null,
@@ -49,11 +48,9 @@ export class CreateComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
+  /**
+   * Handle the form submission.
+   */
   onSubmit() {
     if (this.entityForm.invalid) {
       this.notifyService.error(
@@ -65,6 +62,9 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.createEntity();
   }
 
+  /**
+   * Create a new entity and add it to the state.
+   */
   createEntity() {
     this.entityForm.disable();
 
@@ -73,7 +73,7 @@ export class CreateComponent implements OnInit, OnDestroy {
       entity.name = this.entityForm.value.name.trim();
     }
     if (this.entityForm.value.description) {
-      entity.description = this.entityForm.value.description;
+      entity.description = this.entityForm.value.description.trim();
     }
     if (this.entityForm.value.date) {
       entity.dateFormatted = this.entityForm.value.date;
@@ -83,13 +83,6 @@ export class CreateComponent implements OnInit, OnDestroy {
     }
     entity.isPrivate = this.entityForm.value.privacy === 'private';
 
-    // Attempt to create a new entity.
-    this.entityService
-      .addEntity(entity)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: () => this.router.navigate(['/entity']),
-        error: () => this.entityForm.enable()
-      });
+    this.store.dispatch(new AddEntityStart(entity));
   }
 }

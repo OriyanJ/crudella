@@ -8,5 +8,5 @@ export interface EntityJson {
 }
 
 export interface EntityListJson {
-  List: Array<EntityJson>;
+  List: EntityJson[];
 }
