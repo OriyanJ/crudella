@@ -74,8 +74,10 @@ export class RemoveEntityFailed {
 export type EntityActions =
   | GetEntitiesStart
   | GetEntitiesSuccess
+  | GetEntitiesFailed
   | AddEntityStart
   | AddEntitySuccess
+  | AddEntityFailed
   | UpdateEntityStart
   | UpdateEntitySuccess
   | UpdateEntityFailed

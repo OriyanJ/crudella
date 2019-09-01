@@ -55,7 +55,7 @@ export class Entity {
    */
   tickToDate(dateTicks: any) {
     const ticksToMicrotime = dateTicks / 10000;
-    const epochMicrotimeDiff = 2208988800000;
+    const epochMicrotimeDiff = Math.abs(new Date(0, 0, 1).setFullYear(1));
     return new Date(ticksToMicrotime - epochMicrotimeDiff);
   }
 

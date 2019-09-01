@@ -57,6 +57,9 @@ export function EntityReducer(
       };
 
     case EntityActionTypes.REMOVE_ENTITY_FAILED:
+    case EntityActionTypes.ADD_ENTITY_FAILED:
+    case EntityActionTypes.UPDATE_ENTITY_FAILED:
+    case EntityActionTypes.GET_ENTITIES_FAILED:
       return { ...state, loading: false };
     default:
       return state;
