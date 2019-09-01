@@ -22,6 +22,6 @@ export class EntityDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entity$ = this.entityService.getById(this.entityId).pipe(delay(250));
+    this.entity$ = this.entityService.getById(this.entityId);
   }
 }
