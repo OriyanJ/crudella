@@ -5,7 +5,7 @@ import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const endpoint = `${environment.apiUrl}/Entity`;
+const endpoint = `https://map42.gear.host/api/Entity`;
 
 @Injectable({
   providedIn: 'root'
